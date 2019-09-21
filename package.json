@@ -1,0 +1,19 @@
+{
+  "name": "instax_sound_cheki_downloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dai199/instax_sound_cheki_downloader.git"
+  },
+  "author": "DAIKI TAGAMI",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dai199/instax_sound_cheki_downloader/issues"
+  },
+  "homepage": "https://github.com/dai199/instax_sound_cheki_downloader#readme"
+}
