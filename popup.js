@@ -10,80 +10,33 @@ var visibleLinks = [];
 
 // Display all visible links.
 function showLinks() {
-  var linksTable = document.getElementById('links');
-  while (linksTable.children.length > 1) {
-    linksTable.removeChild(linksTable.children[linksTable.children.length - 1])
-  }
+  var imageEl = document.getElementById('image');
+  var voiceEl = document.getElementById('voice');
   for (var i = 0; i < visibleLinks.length; ++i) {
-    var row = document.createElement('tr');
-    var col0 = document.createElement('td');
-    var col1 = document.createElement('td');
-    var checkbox = document.createElement('input');
-    checkbox.checked = true;
-    checkbox.type = 'checkbox';
-    checkbox.id = 'check' + i;
-    col0.appendChild(checkbox);
-    col1.innerText = visibleLinks[i];
-    col1.style.whiteSpace = 'nowrap';
-    col1.onclick = function() {
-      checkbox.checked = !checkbox.checked;
-    }
-    row.appendChild(col0);
-    row.appendChild(col1);
-    linksTable.appendChild(row);
-  }
-}
-
-// Toggle the checked state of all visible links.
-function toggleAll() {
-  var checked = document.getElementById('toggle_all').checked;
-  for (var i = 0; i < visibleLinks.length; ++i) {
-    document.getElementById('check' + i).checked = checked;
-  }
-}
-
-// Download all visible checked links.
-function downloadCheckedLinks() {
-  for (var i = 0; i < visibleLinks.length; ++i) {
-    if (document.getElementById('check' + i).checked) {
-      chrome.downloads.download({url: visibleLinks[i]},
-                                             function(id) {
-      });
+    if(RegExp('jpg|jpeg|png|gif').test(visibleLinks[i])){
+      imageEl.dataset.url = visibleLinks[i];
+      imageEl.style.display = null;
+    } else if(RegExp('wav|mp3').test(visibleLinks[i])) {
+      voiceEl.dataset.url = visibleLinks[i];
+      voiceEl.style.display = null;
     }
   }
-  window.close();
 }
 
-// Re-filter allLinks into visibleLinks and reshow visibleLinks.
-function filterLinks() {
-  var filterValue = document.getElementById('filter').value;
-  if (document.getElementById('regex').checked) {
-    visibleLinks = allLinks.filter(function(link) {
-      return link.match(filterValue);
-    });
-  } else {
-    var terms = filterValue.split(' ');
-    visibleLinks = allLinks.filter(function(link) {
-      for (var termI = 0; termI < terms.length; ++termI) {
-        var term = terms[termI];
-        if (term.length != 0) {
-          var expected = (term[0] != '-');
-          if (!expected) {
-            term = term.substr(1);
-            if (term.length == 0) {
-              continue;
-            }
-          }
-          var found = (-1 !== link.indexOf(term));
-          if (found != expected) {
-            return false;
-          }
-        }
-      }
-      return true;
+function downloadImage(){
+  if (url = document.getElementById('image').dataset.url){
+    chrome.downloads.download({url: url},
+                                  function(id){
     });
   }
-  showLinks();
+}
+
+function downloadVoice(){
+  if (url = document.getElementById('voice').dataset.url){
+    chrome.downloads.download({url: url},
+                                  function(id){
+    });
+  }
 }
 
 // Add links to allLinks and visibleLinks, sort and show them.  send_links.js is
@@ -101,11 +54,8 @@ chrome.extension.onRequest.addListener(function(links) {
 // Set up event handlers and inject send_links.js into all frames in the active
 // tab.
 window.onload = function() {
-  document.getElementById('filter').onkeyup = filterLinks;
-  document.getElementById('regex').onchange = filterLinks;
-  document.getElementById('toggle_all').onchange = toggleAll;
-  document.getElementById('download0').onclick = downloadCheckedLinks;
-  document.getElementById('download1').onclick = downloadCheckedLinks;
+  document.getElementById('image').onclick = downloadImage;
+  document.getElementById('voice').onclick = downloadVoice;
 
   chrome.windows.getCurrent(function (currentWindow) {
     chrome.tabs.query({active: true, windowId: currentWindow.id},

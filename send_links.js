@@ -1,4 +1,5 @@
 var links = [].slice.apply(document.getElementsByTagName('audio'));
+links = links.concat([].slice.apply(document.getElementsByClassName('imageProperty')));
 links = links.map(function(element) {
   // Return an anchor's href attribute, stripping any URL fragment (hash '#').
   // If the html specifies a relative path, chrome converts it to an absolute
@@ -10,7 +11,7 @@ links = links.map(function(element) {
   }
   return href;
 });
-
+console.log(links);
 links.sort();
 
 chrome.extension.sendRequest(links);

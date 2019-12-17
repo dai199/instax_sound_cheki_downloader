@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <head>
 <script src='popup.js'></script>
+<style>
+  body {
+    width: 300px;
+  }
+  button {
+    display: inline-block;
+    margin-right: 15px;
+    border: 1px solid #aaa;
+    background-color: white;
+    border-radius: 4px;
+  }
+  button:hover {
+    cursor: pointer;
+    background-color: #ddd;
+  }
+</style>
 </head>
 <body>
-<input type=text id=filter placeholder=Filter>
-<input type=checkbox id=regex>
-<label for=regex>Regex</label><br>
-<button id=download0>Download All!</button>
-<table id=links>
-  <tr>
-    <th><input type=checkbox checked id=toggle_all></th>
-    <th align=left>URL</th>
-  </tr>
-</table>
-<button id=download1>Download All!</button>
+  <h3>Sound Instax Downloader</h3>
+  <p>ダウンロード可能になると下にボタンが表示されます</p>
+  <button id="image" style="display: none">画像をDL</button>
+  <button id="voice" style="display: none">音声をDL</button>
 </body>
 </html>
